@@ -1,0 +1,72 @@
+;This sector file produced by ASFEW (Automated Sector File Editing Workflow
+;https://github.com/vZMA/ASFEW
+;Created XXXXXXXXXXXX
+
+#define Teal 8421376
+#define Coast 13056
+#define Tracon 3815994
+#define CENTER 13408665
+#define LOWCTR 3815994
+#define Protect 11010048
+#define MOA 556500
+#define Prohibit 1000
+#define Restrict 1200
+#define Runway 16777215
+#define Taxiway 16711680
+#define Building 4605520
+#define Tower 16711935
+#define Select 8421504
+#define Parking 32768
+#define Expand 16711680
+#define Stopline 255
+#define ramp 32768
+#define RampControl 7895040
+#define ClassB 6697728
+#define ClassC 32896
+#define ClassD 4194368
+#define ModeC 7895040
+#define ATA 16712064
+#define DTA 8388992
+#define AG 8421504
+#define CTR 556500
+#define IAF 8421504
+#define MYNNW 128
+#define VMBG 3815994
+#define VMFG 65793
+#define TXWM 10772514
+#define RWM 6697779
+#define NEW 556500
+#define NBuilding 556500
+#define ZMA 8358280
+#define APCHBDRYS 4280401
+#define JET 2959146
+#define QY 2959146
+#define STAR 4012111
+#define MIT 8358280
+
+[INFO]
+ZMA/ZMO Sector File (1813)
+MIA_CTR
+KMIA
+N026.50.12.787
+W080.51.16.679
+60.000
+54.000
+5.480
+1.000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
