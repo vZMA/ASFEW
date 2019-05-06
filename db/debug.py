@@ -5,7 +5,7 @@ def main():
     c = cn.cursor()
 
     # Load tables with data required from user
-    c.execute("""SELECT * FROM high""")
+    c.execute("""SELECT * FROM fixes""")
     
     print c.fetchall()
 

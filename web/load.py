@@ -41,21 +41,21 @@ def main():
             VALUES ('%s','%s','%s','','AUTO')
            """ % (t[0], t[1], t[2]))
 
-    c.execute("DELETE FROM low WHERE type = 'AUTO'")
-    f = open("data/low.dat", "r")
+    c.execute("DELETE FROM airwaylow WHERE type = 'AUTO'")
+    f = open("data/airwaylow.dat", "r")
     for x in f:
         if x[:1] != ";" and x[:1] != "[":
             t = x.split()
-            c.execute("""INSERT INTO low (name, lat1, lon1, lat2, lon2, comment, type)
+            c.execute("""INSERT INTO airwaylow (name, lat1, lon1, lat2, lon2, comment, type)
             VALUES ('%s','%s','%s','%s','%s','','AUTO')
            """ % (t[0], t[1], t[2], t[3], t[4]))
 
-    c.execute("DELETE FROM high WHERE type = 'AUTO'")
-    f = open("data/high.dat", "r")
+    c.execute("DELETE FROM airwayhigh WHERE type = 'AUTO'")
+    f = open("data/airwayhigh.dat", "r")
     for x in f:
         if x[:1] != ";" and x[:1] != "[":
             t = x.split()
-            c.execute("""INSERT INTO high (name, lat1, lon1, lat2, lon2, comment, type)
+            c.execute("""INSERT INTO airwayhigh (name, lat1, lon1, lat2, lon2, comment, type)
             VALUES ('%s','%s','%s','%s','%s','','AUTO')
            """ % (t[0], t[1], t[2], t[3], t[4]))            
 

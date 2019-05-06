@@ -79,7 +79,7 @@ def main():
                     type text
                 )""")
 
-    c.execute("""CREATE TABLE high (
+    c.execute("""CREATE TABLE airwayhigh (
                     name text,
                     lat1 text,
                     lon1 text,
@@ -89,7 +89,7 @@ def main():
                     type text
                 )""")
 
-    c.execute("""CREATE TABLE low (
+    c.execute("""CREATE TABLE airwaylow (
                     name text,
                     lat1 text,
                     lon1 text,
@@ -109,6 +109,26 @@ def main():
                     type text
                 )""")
 
+    c.execute("""CREATE TABLE artcchigh (
+                    name text,
+                    lat1 text,
+                    lon1 text,
+                    lat2 text,
+                    lon2 text,                    
+                    comment text,
+                    type text
+                )""")
+    
+    c.execute("""CREATE TABLE artcclow (
+                    name text,
+                    lat1 text,
+                    lon1 text,
+                    lat2 text,
+                    lon2 text,                    
+                    comment text,
+                    type text
+                )""")
+    
     c.execute("""CREATE TABLE geo (
                     lat1 text,
                     lon1 text,

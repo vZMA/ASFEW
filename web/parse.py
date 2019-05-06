@@ -25,11 +25,11 @@ class MyHTMLParser(HTMLParser):
                 f.write(data)
                 f.close()
         if data[:5] == '[HIGH':
-            f = open("data/high.dat", "w")
+            f = open("data/airwayhigh.dat", "w")
             f.write(data)
             f.close()
         if data[:4] == '[LOW':
-            f = open("data/low.dat", "w")
+            f = open("data/airwaylow.dat", "w")
             f.write(data)
             f.close()
     
