@@ -41,9 +41,6 @@ class Path(object):
             handle.write("%s %s %s\n" % (a.ljust(30), b.ljust(30), self.color))
 
 
-##comment
-
-
 class Text(object):
     def __init__(self, name, category, pos, color):
         self.name = name
