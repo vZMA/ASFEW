@@ -10,10 +10,12 @@ COLORS = {
     "@RLabel": "RWM"
 }
 
+
 def decdeg2dms(dd):
-    mnt,sec = divmod(dd*3600,60)
-    deg,mnt = divmod(mnt,60)
+    mnt, sec = divmod(dd * 3600, 60)
+    deg, mnt = divmod(mnt, 60)
     return deg, mnt, sec
+
 
 def sct_coord(coord):
     if coord == (0, 0):
@@ -25,6 +27,7 @@ def sct_coord(coord):
         lons = "W%03i.%02i.%06.3f" % lon
         return lats.ljust(14) + ' ' + lons.ljust(14)
 
+
 class Path(object):
     def __init__(self, name, color):
         self.name = name
@@ -32,10 +35,11 @@ class Path(object):
         self.points = []
 
     def emit(self, handle):
-        for i in range(len(self.points)-1):
+        for i in range(len(self.points) - 1):
             a = sct_coord(self.points[i])
-            b = sct_coord(self.points[i+1])
+            b = sct_coord(self.points[i + 1])
             handle.write("%s %s %s\n" % (a.ljust(30), b.ljust(30), self.color))
+
 
 class Text(object):
     def __init__(self, name, category, pos, color):
@@ -48,6 +52,7 @@ class Text(object):
         lat, lon = sct_coord(self.pos).split(" ")
         self.name = '"' + self.name + '"'
         handle.write("%s %s %s %s\n" % (self.name.ljust(40), lat.ljust(14), lon.ljust(14), self.color))
+
 
 class Converter(object):
     def __init__(self, kml, feature, groupname):
@@ -106,7 +111,7 @@ class Converter(object):
             c.execute("DELETE FROM sid WHERE name='%s'" % self.groupname)
             c.execute("DELETE FROM labels WHERE grouptitle='%s' and type='%s'" % self.groupname, "ASDE")
         cn.commit()
-        cn.close()        
+        cn.close()
 
     def emit(self, handle):
         handle.write("[GEO]\n")
@@ -116,6 +121,7 @@ class Converter(object):
         handle.write("[LABELS]\n")
         for text in self.texts:
             text.emit(handle)
+
 
 def main(args):
     if len(args) < 2:
@@ -135,9 +141,7 @@ def main(args):
         conv.emit(outf)
 
 
-
-        
-
 if __name__ == "__main__":
     import sys
+
     main(sys.argv)
