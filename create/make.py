@@ -1,14 +1,17 @@
 import sqlite3
 import datetime
 
+
 def psep(lines, w):
     n = 0
     while n < lines:
         n += 1
         w.write('\n')
 
+
 def writeit(content, w):
     w.write(content + '\n')
+
 
 def main():
     cn = sqlite3.connect('../db/sector.db')
@@ -137,6 +140,7 @@ def main():
     psep(1,f)
     
     cn.close()
+
 
 if __name__=="__main__":
     main()
