@@ -117,6 +117,19 @@ def main():
     
     #[SID]
     writeit("[SID]", f)
+    c.execute("SELECT * FROM sid ORDER BY type, name, sequence")
+    sids = c.fetchall()
+
+    #TODO: implement breaks and groupings in SID and STAR list
+
+    lastitem = ""
+    for sid in sids:
+        if sid[0] != lastitem:
+            writeit(sid[0].ljust(26) + sid[2] + ' ' + sid[3] + ' ' + sid[4] + ' ' + sid[5] + ' ' + sid[6], f)
+            lastitem = sid[0]
+        else:
+            writeit("".ljust(26) + sid[2] + ' ' + sid[3] + ' ' + sid[4] + ' ' + sid[5] + ' ' + sid[6], f)
+
     psep(1,f)
     
     #[STAR]
@@ -137,6 +150,15 @@ def main():
     
     #[LABELS]
     writeit("[LABELS]", f)
+    c.execute("SELECT * FROM labels ORDER BY type, grouptitle, name")
+    labels = c.fetchall()
+
+    #TODO: implement group labeling in output
+    #TODO: remove asterisk selects for future proofing
+
+    for label in labels:
+        writeit(('"' + label[1] + '"').ljust(30) + ' ' + label[2] + ' ' + label[3] + ' ' + label[4], f)
+
     psep(1,f)
     
     cn.close()

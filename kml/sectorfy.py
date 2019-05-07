@@ -33,12 +33,19 @@ class Path(object):
         self.name = name
         self.color = color
         self.points = []
+        self.coordlist = []
 
-    def emit(self, handle):
+    # def emit(self, handle):
+    #     for i in range(len(self.points) - 1):
+    #         a = sct_coord(self.points[i])
+    #         b = sct_coord(self.points[i + 1])
+    #         handle.write("%s %s %s\n" % (a.ljust(30), b.ljust(30), self.color))
+
+    def coords(self):
         for i in range(len(self.points) - 1):
-            a = sct_coord(self.points[i])
-            b = sct_coord(self.points[i + 1])
-            handle.write("%s %s %s\n" % (a.ljust(30), b.ljust(30), self.color))
+            a, b = sct_coord(self.points[i]).split(" ")
+            c, d = sct_coord(self.points[i + 1]).split(" ")
+            self.coordlist.append((a, b, c, d))
 
 
 class Text(object):
@@ -48,16 +55,15 @@ class Text(object):
         self.category = category
         self.pos = pos
 
-    def emit(self, handle):
+    def coords(self):
         lat, lon = sct_coord(self.pos).split(" ")
-        self.name = '"' + self.name + '"'
-        handle.write("%s %s %s %s\n" % (self.name.ljust(40), lat.ljust(14), lon.ljust(14), self.color))
+        return lat.ljust(14), lon.ljust(14)
 
 
 class Converter(object):
-    def __init__(self, kml, feature, groupname):
+    def __init__(self, kml, feature, name):
         self.kml = kml
-        self.name = groupname
+        self.name = name
         self.feature = feature
         self.paths = []
         self.regions = []
@@ -101,44 +107,78 @@ class Converter(object):
                     self.point(str(item.name), name, child)
 
     def convert(self):
-        for child in self.kml.Document.iterchildren():
-            self.dispatch(child, "root")
-
-    def cleandb():
         cn = sqlite3.connect('../db/sector.db')
         c = cn.cursor()
+
         if self.feature == "@ASDE":
-            c.execute("DELETE FROM sid WHERE name='%s'" % self.groupname)
-            c.execute("DELETE FROM labels WHERE grouptitle='%s' and type='%s'" % self.groupname, "ASDE")
+            c.execute("DELETE FROM sid WHERE name='%s' AND type='%s'" % (self.name, 'ASDE'))
+            c.execute("DELETE FROM labels WHERE grouptitle='%s' and type='%s'" % (self.name, 'ASDE'))
+        if self.feature == "@BoundHi":
+            pass
+        if self.feature == "@BoundLo":
+            pass
+        if self.feature == "@Bound":
+            pass
+        if self.feature == "@Geo":
+            pass
+
         cn.commit()
         cn.close()
+        for child in self.kml.Document.iterchildren():
+            self.dispatch(child, "root")
+        self.emit()
 
-    def emit(self, handle):
-        handle.write("[GEO]\n")
-        for path in self.paths:
-            path.emit(handle)
+    def emit(self):
+        cn = sqlite3.connect('../db/sector.db')
+        c = cn.cursor()
 
-        handle.write("[LABELS]\n")
-        for text in self.texts:
-            text.emit(handle)
+        if self.feature == "@ASDE":
+            for path in self.paths:
+                path.coords()
+                loop = 0
+                for coord in path.coordlist:
+                    loop += 1
+                    c.execute("INSERT INTO sid VALUES ('%s',%i,'%s','%s','%s','%s','%s','%s','%s')" % (self.name, loop, coord[0], coord[1], coord[2], coord[3], path.color, path.name, 'ASDE'))
+            for text in self.texts:
+                lat, lon = text.coords()
+                c.execute("INSERT INTO labels VALUES ('%s','%s','%s','%s','%s','','%s')" % (self.name, text.name, lat, lon, text.color, "ASDE"))
+        if self.feature == "@BoundHi":
+            pass
+        if self.feature == "@BoundLo":
+            pass
+        if self.feature == "@Bound":
+            pass
+        if self.feature == "@Geo":
+            pass
 
+        # name
+        # sequence
+        # lat1
+        # lon1
+        # lat2
+        # lon2
+        # color
+        # comment
+        # type
+
+
+
+        cn.commit()
+        cn.close()
 
 def main(args):
     if len(args) < 2:
         print "no input file specified"
         return 1
 
-    out_file = "out.sct"
     kml_file = args[1]
-    with open(kml_file) as inf, open(out_file, "w") as outf:
+    with open(kml_file) as inf:
         kml = pykml.parser.parse(inf).getroot()
         name = str(kml.Document.name)
         base, extension = name.split(".")
-        feature, groupname = name.split("_")
-        conv = Converter(kml, feature, groupname)
-        conv.cleandb
+        feature, group = base.split("_")
+        conv = Converter(kml, feature, group)
         conv.convert()
-        conv.emit(outf)
 
 
 if __name__ == "__main__":
