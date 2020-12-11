@@ -1,0 +1,1 @@
+#concatenate ATS.txt and AWY.txt, then put combined.txt into this folder
